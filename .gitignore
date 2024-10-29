@@ -1,0 +1,4 @@
+// Purpose: Ignore the .env file
+db/.env
+backend/app/.env
+frontend/.env
