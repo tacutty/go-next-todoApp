@@ -1,4 +1,4 @@
-# makino_portal
+# go_next_todoApp
 -
 # サービスのURL
 -
