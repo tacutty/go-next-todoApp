@@ -1,4 +1,5 @@
-// Purpose: Ignore the .env file
-db/.env
+# Purpose: Ignore the .env file
+
 backend/app/.env
 frontend/.env
+db/.env
