@@ -33,10 +33,13 @@ services:
         networks:
             - frontend_network
             - backend_network
+        environment:
+            - GO_ENV=dev
 
     db:
         container_name: db
         build: ./db
+        image: mysql:8.0 # イメージの指定
         tty: true
         platform: linux/x86_64
         ports:
@@ -44,13 +47,15 @@ services:
         env_file:
             - ./db/.env
         volumes:
-            - mysql_makino_portal_volume:/var/lib/mysql
+            - mysql_go_next_todo_volume:/var/lib/mysql
+            - ./db/sql/init.sql:/docker-entrypoint-initdb.d/init.sql # 初期化スクリプトのマウント
         networks:
             - backend_network
 
 volumes:
-    mysql_makino_portal_volume:
+    mysql_go_next_todo_volume:
     node_modules:
+
 
 networks:
     frontend_network:

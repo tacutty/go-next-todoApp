@@ -1,0 +1,6 @@
+# .air.toml
+[build]
+cmd = "go run main.go"       # 実行コマンド
+include_ext = ["go"]          # 監視するファイル拡張子
+exclude_dir = ["vendor"]      # 除外するディレクトリ
+bin = "tmp/main"              # コンパイル後の一時ファイルの場所

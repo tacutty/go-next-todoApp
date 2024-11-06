@@ -1,12 +1,22 @@
-# goのバージョン指定
-FROM golang:1.19.2-alpine3.16
+# Goのバージョン指定（1.23を使用）
+FROM golang:1.23
+
+# 必要なパッケージをインストールし、Airをインストール
+RUN apt-get update && apt-get install -y curl && \
+    go install github.com/air-verse/air@latest
+
 # ディレクトリ作成
-RUN mkdir /go/src/app
+RUN mkdir -p /go/src/app
+
 # 作業ディレクトリ変更
 WORKDIR /go/src/app
+
+
 # アプリケーションのソースコードをコピー
 COPY app/ .
+
 # 依存関係をインストール
 RUN go mod tidy
-# main.go実行
-CMD ["go", "run", "main.go"]
+
+# Airを使ってアプリケーションをホットリロード
+CMD ["air", "-c", ".air.toml"]
