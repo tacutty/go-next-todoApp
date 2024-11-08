@@ -11,12 +11,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// DB is a struct that represents the database
 type DB struct{}
 
+// NewDB is a function that returns a new DB
 func NewDB() *DB {
 	return &DB{}
 }
 
+// ConnectDB is a method that connects to the database
 func (db *DB) ConnectDB() *gorm.DB {
 	fmt.Println("ConnectDB is being called")
 

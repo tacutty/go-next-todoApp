@@ -4,6 +4,7 @@ import (
 	"go_next_todo/domain/model"
 )
 
+// ITaskRepository interface
 type ITaskRepository interface {
 	GetAllTasks(tasks *[]model.Task, userID string) error
 	GetTaskByID(task *model.Task, taskID string, userID string) error

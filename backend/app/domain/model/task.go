@@ -2,6 +2,7 @@ package model
 
 import "time"
 
+// Task struct
 type Task struct {
 	ID          string    `json:"id" gorm:"primary_key"`
 	Title       string    `json:"title" gorm:"not null"`
@@ -14,6 +15,7 @@ type Task struct {
 	UserID      string    `json:"user_id" gorm:"not null"`
 }
 
+// TaskResponse struct
 type TaskResponse struct {
 	ID          string    `json:"id" gorm:"primary_key"`
 	Title       string    `json:"title" gorm:"not null"`
