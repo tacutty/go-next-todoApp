@@ -76,7 +76,7 @@ func (tr *taskRepository) UpdateTask(task *model.Task, taskID string, userID str
 // @param userID string
 // @return error
 func (tr *taskRepository) DeleteTask(taskID string, userID string) error {
-	if err := tr.db.Where ("id = ? AND user_id = ?", taskID, userID).Delete(&model.Task{}).Error; err != nil {
+	if err := tr.db.Where("id = ? AND user_id = ?", taskID, userID).Delete(&model.Task{}).Error; err != nil {
 		return err
 	}
 	return nil
