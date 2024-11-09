@@ -1,6 +1,8 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 // Task struct
 type Task struct {
@@ -17,7 +19,7 @@ type Task struct {
 
 // TaskResponse struct
 type TaskResponse struct {
-	ID          string    `json:"id" gorm:"primary_key"`
+	ID          string `json:"id" gorm:"primary_key"`
 	Title       string    `json:"title" gorm:"not null"`
 	Description string    `json:"description"`
 	Completed   bool      `json:"completed"`
