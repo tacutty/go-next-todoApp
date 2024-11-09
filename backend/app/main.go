@@ -1,15 +1,20 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/labstack/echo/v4"
+	"fmt"
+	"go_next_todo/application/service"
+	"go_next_todo/handler"
+	repository "go_next_todo/infrastrucuture"
+	"go_next_todo/infrastrucuture/db"
+	router "go_next_todo/infrastrucuture/web"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	database := db.NewDB()
+	userRepository := repository.NewUserRepository(database.ConnectDB())
+	userUsecase := service.NewUserUsecase(userRepository)
+	userHandler := handler.NewUserHandler(userUsecase)
+	fmt.Println("check", userHandler)
+	e := router.NewRouter(userHandler)
 	e.Logger.Fatal(e.Start(":8080"))
 }

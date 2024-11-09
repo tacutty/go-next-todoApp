@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"go_next_todo/application/usecase"
 	"go_next_todo/domain/model"
 	"net/http"
@@ -8,22 +9,28 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type IUserHandler interface {
+	SignUp(c echo.Context) error
+	Login(c echo.Context) error
+}
+
 // UserHandler struct
-type UserHandler struct {
+type userHandler struct {
 	uu usecase.IUserUsecase
 }
 
 // NewUserHandler function
-func NewUserHandler(uu usecase.IUserUsecase) *UserHandler {
-	return &UserHandler{uu}
+func NewUserHandler(uu usecase.IUserUsecase) IUserHandler {
+	return &userHandler{uu}
 }
 
 // CreateUser function
 // Create user
 // @param c echo.Context
 // @return error
-func (uh *UserHandler) SignUp(c echo.Context) error {
+func (uh *userHandler) SignUp(c echo.Context) error {
 	user := model.User{}
+	fmt.Println("user", user)
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -39,7 +46,7 @@ func (uh *UserHandler) SignUp(c echo.Context) error {
 // Login user
 // @param c echo.Context
 // @return error
-func (uh *UserHandler) Login(c echo.Context) error {
+func (uh *userHandler) Login(c echo.Context) error {
 	user := model.User{}
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

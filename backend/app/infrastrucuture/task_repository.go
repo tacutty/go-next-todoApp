@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"go_next_todo/domain/model"
+	"go_next_todo/domain/repository"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -13,7 +14,7 @@ type taskRepository struct {
 }
 
 // NewTaskRepository function
-func NewTaskRepository(db *gorm.DB) *taskRepository {
+func NewTaskRepository(db *gorm.DB) repository.ITaskRepository {
 	return &taskRepository{db: db}
 }
 

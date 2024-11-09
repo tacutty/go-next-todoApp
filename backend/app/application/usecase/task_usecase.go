@@ -4,10 +4,10 @@ import (
 	"go_next_todo/domain/model"
 )
 
-type ITaskRepository interface {
-	CreateTask(task *model.Task) error
-	GetAllTasks(tasks *[]model.Task, userID string) error
-	GetTaskByID(task *model.Task, taskID string, userID string) error
-	UpdateTask(task *model.Task, taskID string, userID string) error
-	DeleteTask(taskID string, userID string) error
+type ITaskUsecase interface {
+	GetAllTasks(userId string) ([]model.TaskResponse, error)
+	GetTaskById(userId string, taskId string) (model.TaskResponse, error)
+	CreateTask(task model.Task) (model.TaskResponse, error)
+	UpdateTask(task model.Task, userId string, taskId string) (model.TaskResponse, error)
+	DeleteTask(userId string, taskId string) error
 }

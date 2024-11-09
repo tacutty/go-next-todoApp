@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"go_next_todo/domain/model"
+	"go_next_todo/domain/repository"
 
 	"gorm.io/gorm"
 )
@@ -12,8 +13,8 @@ type userRepository struct {
 }
 
 // NewUserRepository function
-func NewUserRepository(db *gorm.DB) *userRepository {
-	return &userRepository{db: db}
+func NewUserRepository(db *gorm.DB) repository.IUserRepository {
+	return &userRepository{db}
 }
 
 // GetUserByEmail function

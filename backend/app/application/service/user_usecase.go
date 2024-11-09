@@ -3,6 +3,7 @@ package service
 import (
 	"go_next_todo/domain/model"
 	"go_next_todo/domain/repository"
+	"go_next_todo/application/usecase"
 )
 
 // userUsecase struct
@@ -11,7 +12,7 @@ type userUsecase struct {
 }
 
 // NewUserUsecase function
-func NewUserUsecase(ur repository.IUserRepository) *userUsecase {
+func NewUserUsecase(ur repository.IUserRepository) usecase.IUserUsecase {
 	return &userUsecase{ur}
 }
 
