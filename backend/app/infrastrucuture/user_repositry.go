@@ -22,7 +22,7 @@ func NewUserRepository(db *gorm.DB) repository.IUserRepository {
 // @param user *model.User
 // @param email string
 // @return error
-func (ur *userRepository) GetUserByEmail(user *model.User, username string) error {
+func (ur *userRepository) GetUserByNameAndEmail(user *model.User, username, email string) error {
 	if err := ur.db.Where("username = ?", username).First(user).Error; err != nil {
 		return err
 	}

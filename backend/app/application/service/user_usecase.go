@@ -62,8 +62,12 @@ func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
 // @param user model.User
 // @return string, error
 func (uu *userUsecase) Login(user model.User) (string, error) {
+	validatorErr := uu.uv.UserValidate(user)
+	if validatorErr != nil {
+		return "", validatorErr
+	}
 	storedUser := model.User{}
-	if err := uu.ur.GetUserByEmail(&storedUser, user.Email); err != nil {
+	if err := uu.ur.GetUserByNameAndEmail(&storedUser, user.Username, user.Email); err != nil {
 		return "", err
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password)); err != nil {

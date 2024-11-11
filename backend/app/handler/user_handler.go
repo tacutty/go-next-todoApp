@@ -30,7 +30,6 @@ func NewUserHandler(uu usecase.IUserUsecase) IUserHandler {
 // @return error
 func (uh *userHandler) SignUp(c echo.Context) error {
 	user := model.User{}
-	fmt.Println("user", user)
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
@@ -47,10 +46,12 @@ func (uh *userHandler) SignUp(c echo.Context) error {
 // @param c echo.Context
 // @return error
 func (uh *userHandler) Login(c echo.Context) error {
+	fmt.Println("login")
 	user := model.User{}
 	if err := c.Bind(&user); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
+	fmt.Println("user", user)
 	token, err := uh.uu.Login(user)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())

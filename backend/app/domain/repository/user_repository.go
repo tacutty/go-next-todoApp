@@ -6,6 +6,6 @@ import (
 
 // IUserRepository interface
 type IUserRepository interface {
-	GetUserByEmail(user *model.User, email string) error
+	GetUserByNameAndEmail(user *model.User, username, email string) error
 	CreateUser(user *model.User) error
 }
