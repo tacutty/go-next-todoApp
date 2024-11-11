@@ -5,6 +5,7 @@ import (
 	"go_next_todo/domain/model"
 	"go_next_todo/domain/repository"
 	"go_next_todo/utils"
+	"go_next_todo/validator"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -12,11 +13,12 @@ import (
 // userUsecase struct
 type userUsecase struct {
 	ur repository.IUserRepository
+	uv validator.IUserValidator
 }
 
 // NewUserUsecase function
-func NewUserUsecase(ur repository.IUserRepository) usecase.IUserUsecase {
-	return &userUsecase{ur}
+func NewUserUsecase(ur repository.IUserRepository, uv validator.IUserValidator) usecase.IUserUsecase {
+	return &userUsecase{ur, uv}
 }
 
 // SignUp function
@@ -24,6 +26,10 @@ func NewUserUsecase(ur repository.IUserRepository) usecase.IUserUsecase {
 // @param user model.User
 // @return model.User, error
 func (uu *userUsecase) SignUp(user model.User) (model.UserResponse, error) {
+	validatorErr := uu.uv.UserValidate(user)
+	if validatorErr != nil {
+		return model.UserResponse{}, validatorErr
+	}
 	id, err := utils.GeneULIDString()
 	if err != nil {
 		return model.UserResponse{}, err
