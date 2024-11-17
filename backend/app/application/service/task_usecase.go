@@ -4,16 +4,19 @@ import (
 	"go_next_todo/application/usecase"
 	"go_next_todo/domain/model"
 	"go_next_todo/domain/repository"
+	"go_next_todo/utils"
+	"go_next_todo/validator"
 )
 
 // taskUsecase struct
 type taskUsecase struct {
 	tr repository.ITaskRepository
+	tv validator.ITaskValidator
 }
 
 // NewTaskUsecase function
-func NewTaskUsecase(tr repository.ITaskRepository) usecase.ITaskUsecase {
-	return &taskUsecase{tr}
+func NewTaskUsecase(tr repository.ITaskRepository, tv validator.ITaskValidator) usecase.ITaskUsecase {
+	return &taskUsecase{tr, tv}
 }
 
 // GetAllTasks function
@@ -59,6 +62,17 @@ func (tu *taskUsecase) GetTaskById(userId, taskId string) (model.TaskResponse, e
 // @param task model.Task
 // @return model.TaskResponse, error
 func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
+	validatorErr := tu.tv.TaskValidate(task)
+	if validatorErr != nil {
+		return model.TaskResponse{}, validatorErr
+	}
+
+	id, err := utils.GeneULIDString()
+	if err != nil {
+		return model.TaskResponse{}, err
+	}
+	task.ID = id
+
 	if err := tu.tr.CreateTask(&task); err != nil {
 		return model.TaskResponse{}, err
 	}
@@ -77,11 +91,16 @@ func (tu *taskUsecase) CreateTask(task model.Task) (model.TaskResponse, error) {
 // @param taskId string
 // @return model.TaskResponse, error
 func (tu *taskUsecase) UpdateTask(task model.Task, userId, taskId string) (model.TaskResponse, error) {
+	validatorErr := tu.tv.TaskValidate(task)
+	if validatorErr != nil {
+		return model.TaskResponse{}, validatorErr
+	}
+
 	if err := tu.tr.UpdateTask(&task, taskId, userId); err != nil {
 		return model.TaskResponse{}, err
 	}
 	resTask := model.TaskResponse{
-		ID:          task.ID,
+		ID:          taskId,
 		Title:       task.Title,
 		Description: task.Description,
 		Completed:   task.Completed,

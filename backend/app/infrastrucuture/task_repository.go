@@ -1,6 +1,7 @@
 package infrastructure
 
 import (
+	"fmt"
 	"go_next_todo/domain/model"
 	"go_next_todo/domain/repository"
 
@@ -37,7 +38,7 @@ func (tr *taskRepository) GetAllTasks(tasks *[]model.Task, userID string) error 
 // @param userID string
 // @return error
 func (tr *taskRepository) GetTaskByID(task *model.Task, taskID string, userID string) error {
-	if err := tr.db.Joins("User").Where(("id = ? AND user_id = ?"), taskID, userID).First(task).Error; err != nil {
+	if err := tr.db.Where(("id = ? AND user_id = ?"), taskID, userID).First(task).Error; err != nil {
 		return err
 	}
 	return nil
@@ -77,8 +78,12 @@ func (tr *taskRepository) UpdateTask(task *model.Task, taskID string, userID str
 // @param userID string
 // @return error
 func (tr *taskRepository) DeleteTask(taskID string, userID string) error {
-	if err := tr.db.Where("id = ? AND user_id = ?", taskID, userID).Delete(&model.Task{}).Error; err != nil {
-		return err
+	result := tr.db.Where("id = ? AND user_id = ?", taskID, userID).Delete(&model.Task{})
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected < 1 {
+		return fmt.Errorf("object does not exist")
 	}
 	return nil
 }

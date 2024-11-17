@@ -4,19 +4,17 @@ import (
 	"os"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"go_next_todo/domain/model"
-)
 
-// mySigningKey variable
-var mySigningKey = []byte(os.Getenv("SECRET"))
+	"github.com/golang-jwt/jwt/v5"
+)
 
 // MyCustomClaims struct
 type MyCustomClaims struct {
 	ID       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 // GenerateJwtToken function
@@ -25,18 +23,18 @@ type MyCustomClaims struct {
 // @return string, error
 func GenerateJwtToken(user model.User) (string, error) {
 	claims := MyCustomClaims{
-		user.ID,
-		user.Username,
-		user.Email,
-		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		ID:       user.ID,
+		Username: user.Username,
+		Email:    user.Email,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			Issuer:    "go_next_todo",
 		},
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString(mySigningKey)
+	tokenString, err := token.SignedString([]byte(os.Getenv("SECRET")))
 	if err != nil {
 		return "", err
 	}

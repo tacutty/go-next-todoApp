@@ -12,7 +12,7 @@ type Task struct {
 	Completed   bool      `json:"completed"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
-	DeletedAt   time.Time `json:"deleted_at"`
+	DeletedAt   *time.Time `json:"deleted_at"`
 	User        User      `json:"user" gorm:"foreignKey:UserID"`
 	UserID      string    `json:"user_id" gorm:"not null"`
 }
